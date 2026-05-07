@@ -74,7 +74,7 @@ if __name__ == '__main__':
     parser.add_argument('--method', type=str,
                         choices=["bare", 'agem', 'mas', 'joint', 'gss', 'er', 'tfmas', 'ssm', 'dmsg', 'sem'], default="bare",
                         help="baseline continual learning method")
-    parser.add_argument('--setting', type=str, default='tfocis', help="setting [tfo, tfocis, tfo_bb, tfo_gaussian]")
+    parser.add_argument('--setting', type=str, default='tfo_gaussian', help="setting [tfo, tfocis, tfo_bb, tfo_gaussian]")
     parser.add_argument('--time_streaming', type=strtobool, default=False, help="whether to load time incremental graph")
     # parameters for continual learning settings
     parser.add_argument('--tasks_to_preserve', type=int, default=1,

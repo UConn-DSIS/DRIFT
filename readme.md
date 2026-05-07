@@ -59,18 +59,19 @@ pip install numpy scipy scikit-learn ogb
 
 | Dataset          | Type             | Used For                         |
 |------------------|------------------|----------------------------------|
-| CoraFull-CL      | Citation network | Class-incremental settings       |
-| Arxiv-CL         | Citation network | Class- and time-incremental      |
-| Reddit-CL        | Social network   | Class-incremental settings       |
-| RomanEmpire-CL   | Heterophilic     | Class-incremental settings       |
+| CoraFull-CL      | Citation network | Task-Free Streaming              |
+| Arxiv-CL         | Citation network | Task-Free/Time Streaming         |
+| Reddit-CL        | Social network   | Task-Free Streaming              |
+| RomanEmpire-CL   | Heterophilic     | Task-Free Streaming              |
 
 Set `--ori_data_path` to the directory containing raw data; processed splits are cached under `--data_path` (default `./data`).
 
 ## Quick Start
 
-### Class-Incremental (default TFO-CIS)
+### Gaussian Continuous Transition
 ```bash
-python main.py --dataset CoraFull-CL --backbone GCN --method er --setting tfocis
+python main.py --dataset CoraFull-CL --backbone GCN --method sem \
+    --setting tfo_gaussian --gaussian_sigma 20.0
 ```
 
 ### Global Blurry
@@ -85,13 +86,13 @@ python main.py --dataset CoraFull-CL --backbone GCN --method dmsg \
     --setting tfo_bb --blurry_batch_count 5 --boundary_mix_ratio 0.5
 ```
 
-### Gaussian Continuous Transition
+### Class-Incremental Stream
 ```bash
-python main.py --dataset CoraFull-CL --backbone GCN --method sem \
-    --setting tfo_gaussian --gaussian_sigma 20.0
+python main.py --dataset CoraFull-CL --backbone GCN --method er --setting tfocis
 ```
 
 ### Time-Incremental Stream
+Use original time-stamp to split dataset
 ```bash
 python main.py --dataset Arxiv-CL --backbone GCN --method er \
     --time_streaming True --n_time_tasks 20
