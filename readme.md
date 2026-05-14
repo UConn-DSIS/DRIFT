@@ -151,7 +151,8 @@ If you find DRIFT helpful, please cite our paper:
 ```bibtex
 @article{drift2026,
   title={DRIFT: A Benchmark for Task-Free Continual Graph Learning under Continuous Transitions},
-  author={Anonymous},
+  author={Guiquan Sun, Xikun Zhang, Jingchao Ni, Dongjin Song},
+  journal={arXiv preprint arXiv:2605.12998},
   year={2026}
 }
 ```
