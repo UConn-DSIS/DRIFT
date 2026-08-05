@@ -18,6 +18,7 @@ DRIFT/
 ├── main.py                # Entry point: argument parsing and experiment orchestration
 ├── pipeline.py            # Training/evaluation pipelines for each setting
 ├── metrics.py             # Evaluation metrics (Final Acc, BWT, FWT, AAUC, FM)
+├── gaussian_utils.py      # Gaussian stream construction, diagnostics, and sigma calibration
 ├── Backbones/             # GNN backbones (GCN, GAT, GIN)
 │   ├── gnnconv.py
 │   ├── gnns.py
@@ -73,6 +74,8 @@ Set `--ori_data_path` to the directory containing raw data; processed splits are
 python main.py --dataset CoraFull-CL --backbone GCN --method sem \
     --setting tfo_gaussian --gaussian_sigma 20.0
 ```
+
+`--gaussian_sigma` is measured in batch units. A larger value produces more overlap between adjacent tasks. By default, each task is sampled without replacement until its shuffled node deck is exhausted; use `--replace True` to sample with replacement. Gaussian streams are cached separately for each dataset, batch size, sigma, and replacement mode.
 
 ### Global Blurry
 ```bash
