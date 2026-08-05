@@ -125,41 +125,6 @@ python main.py --dataset Arxiv-CL --backbone GCN --method er \
 | `tfo_bb`        | Boundary-blurry: mix samples across adjacent task batches |
 | `tfo_gaussian`  | Gaussian-weighted continuous task transitions             |
 
-## Gaussian Stream Utilities
-
-`gaussian_utils.py` contains the stream builder used by `tfo_gaussian`. It places each task center at the midpoint of its natural batch window, computes softmax-normalized Gaussian task weights for every batch, converts these weights to exact integer batch counts with largest-remainder rounding, and samples task nodes with a reproducible seed.
-
-The module also provides diagnostics for continuous shifts. `normalized_mixing_entropy` measures theoretical task overlap on a scale from 0 to 1, while `finite_batch_mixing_entropy` measures the overlap after integer batch rounding. `finite_batch_task_exposure` reports how often each task is sampled, and `overlap_index` reports the fraction of batches in which no task has more than 90% of the mixture weight. `calibrate_sigma_for_mixing_entropy` finds a dataset-specific sigma for a requested theoretical mixing entropy and returns the achieved entropy, finite-batch gap, exposure statistics, and stream metadata.
-
-The utilities can also be used independently of the training pipeline:
-
-```python
-from gaussian_utils import (
-    build_gaussian_stream,
-    calibrate_sigma_for_mixing_entropy,
-)
-
-task_node_ids = [[0, 1, 2], [3, 4, 5, 6], [7, 8, 9]]
-task_sizes = [len(node_ids) for node_ids in task_node_ids]
-
-calibration = calibrate_sigma_for_mixing_entropy(
-    task_sizes,
-    batch_size=4,
-    target_mixing_entropy=0.5,
-)
-stream, centers, batch_counts, total_batches, epochs_per_task = (
-    build_gaussian_stream(
-        task_node_ids,
-        batch_size=4,
-        sigma=calibration["sigma"],
-        seed=0,
-        replace=False,
-    )
-)
-```
-
-Each item in `stream` is `(batch_node_ids, batch_task_labels, weights)`, where `weights` contains the theoretical Gaussian mixture weights before integer rounding. When `replace=True`, `build_gaussian_stream` returns the first four values and omits `epochs_per_task`.
-
 ## Evaluation Metrics
 
 - **Final Accuracy (FA)**: Average accuracy after the last task.
